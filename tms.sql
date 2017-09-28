@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 25, 2017 at 03:50 AM
+-- Generation Time: Sep 26, 2017 at 11:01 PM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -30,7 +30,7 @@ CREATE TABLE `admin` (
   `email_ID` varchar(20) NOT NULL,
   `admin_ID` char(10) NOT NULL,
   `admin_name` varchar(25) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -46,7 +46,7 @@ CREATE TABLE `borrows` (
   `return_date` timestamp NULL DEFAULT NULL,
   `comments` varchar(100) DEFAULT NULL,
   `fine` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -63,7 +63,7 @@ CREATE TABLE `inventory` (
   `date_introduced` date DEFAULT NULL,
   `location_ID` int(11) DEFAULT NULL,
   `availability` char(1) DEFAULT 'Y'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -76,7 +76,7 @@ CREATE TABLE `item_review` (
   `item_ID` int(11) DEFAULT NULL,
   `rating` tinyint(1) NOT NULL,
   `review` varchar(1000) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -88,7 +88,7 @@ CREATE TABLE `location` (
   `loc_ID` int(11) NOT NULL,
   `bldg_name` varchar(30) DEFAULT NULL,
   `room` tinyint(10) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -100,11 +100,11 @@ CREATE TABLE `student` (
   `email_ID` varchar(20) NOT NULL,
   `f_name` varchar(15) DEFAULT NULL,
   `l_name` varchar(15) DEFAULT NULL,
-  `uga_ID` char(10) DEFAULT NULL,
+  `uga_ID` char(10) NOT NULL,
   `phone` char(10) DEFAULT NULL,
   `department` varchar(20) DEFAULT NULL,
   `total_fine` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -116,7 +116,7 @@ CREATE TABLE `users` (
   `email_ID` varchar(20) NOT NULL,
   `pass` varchar(512) DEFAULT NULL,
   `role` varchar(10) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -151,7 +151,8 @@ ALTER TABLE `location`
 -- Indexes for table `student`
 --
 ALTER TABLE `student`
-  ADD PRIMARY KEY (`email_ID`);
+  ADD PRIMARY KEY (`email_ID`),
+  ADD UNIQUE KEY `uga_ID` (`uga_ID`);
 
 --
 -- Indexes for table `users`
@@ -168,6 +169,22 @@ ALTER TABLE `users`
 --
 ALTER TABLE `inventory`
   MODIFY `item_ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `admin`
+--
+ALTER TABLE `admin`
+  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`email_ID`) REFERENCES `users` (`email_ID`);
+
+--
+-- Constraints for table `student`
+--
+ALTER TABLE `student`
+  ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`email_ID`) REFERENCES `users` (`email_ID`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
